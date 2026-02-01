@@ -3,35 +3,73 @@
 <head>
 <meta charset="UTF-8">
 <title>Valentine</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Pacifico&display=swap" rel="stylesheet">
+
 <style>
   body {
     height: 100vh;
+    margin: 0;
     display: flex;
     justify-content: center;
     align-items: center;
-    background: #111;
-    color: #fff;
+    background: radial-gradient(circle, #2b0000, #000);
+    color: white;
     font-family: Arial, sans-serif;
     overflow: hidden;
   }
 
   .card {
     text-align: center;
+    position: relative;
+    z-index: 2;
+  }
+
+  h1 {
+    margin-bottom: 30px;
   }
 
   button {
-    padding: 12px 24px;
+    padding: 14px 36px;
     font-size: 18px;
     margin: 10px;
+    border: none;
+    border-radius: 999px;
     cursor: pointer;
     transition: transform 0.1s;
   }
 
+  #yes {
+    background: #ff4d6d;
+    color: white;
+  }
+
   #no {
+    background: #444;
+    color: white;
     position: absolute;
+  }
+
+  .rose {
+    position: absolute;
+    font-size: 24px;
+    pointer-events: none;
+    animation: explode 1s forwards;
+  }
+
+  @keyframes explode {
+    from {
+      transform: translate(0, 0) scale(1);
+      opacity: 1;
+    }
+    to {
+      transform: translate(var(--x), var(--y)) scale(0);
+      opacity: 0;
+    }
   }
 </style>
 </head>
+
 <body>
 
 <div class="card">
@@ -41,8 +79,8 @@
 </div>
 
 <script>
-  const noBtn = document.getElementById("no");
   const yesBtn = document.getElementById("yes");
+  const noBtn = document.getElementById("no");
 
   let scale = 1;
 
@@ -56,6 +94,25 @@
   yesBtn.addEventListener("mousemove", () => {
     scale += 0.05;
     yesBtn.style.transform = `scale(${scale})`;
+  });
+
+  yesBtn.addEventListener("click", () => {
+    for (let i = 0; i < 30; i++) {
+      const rose = document.createElement("div");
+      rose.className = "rose";
+      rose.textContent = "🌹";
+      rose.style.left = yesBtn.offsetLeft + 50 + "px";
+      rose.style.top = yesBtn.offsetTop + 20 + "px";
+      rose.style.setProperty("--x", `${Math.random() * 400 - 200}px`);
+      rose.style.setProperty("--y", `${Math.random() * 400 - 200}px`);
+      document.body.appendChild(rose);
+
+      setTimeout(() => rose.remove(), 1000);
+    }
+
+    setTimeout(() => {
+      window.location.href = "success.html";
+    }, 800);
   });
 </script>
 
